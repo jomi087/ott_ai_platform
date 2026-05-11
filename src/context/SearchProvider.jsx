@@ -1,13 +1,19 @@
-import  { useState } from 'react'
-import SearchContext from './SearchContext'
+import { useState } from "react"
+import SearchContext from "./SearchContext"
 
-const SearchProvider = ({children}) => {
-    const [search,setSearch] = useState(false)
-    //console.log(search)
-
+const SearchProvider = ({ children }) => {
+  const [showSearchPage, setShowSearchPage] = useState(false)
+  const [movieSuggestionResult, setMovieSuggestionResult] = useState([])
   return (
-    <SearchContext.Provider value={{search,setSearch}}>
-        {children}
+    <SearchContext.Provider
+      value={{
+        showSearchPage,
+        setShowSearchPage,
+        movieSuggestionResult,
+        setMovieSuggestionResult, 
+      }}
+    >
+      {children}
     </SearchContext.Provider>
   )
 }

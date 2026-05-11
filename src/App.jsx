@@ -1,6 +1,3 @@
-
-
-import React from 'react'
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import { ToastContainer} from 'react-toastify';
 
@@ -26,8 +23,6 @@ const router = createBrowserRouter([
     element : <NotFound/>
   }
 ]);
-
-
 
 const App = () => {
   return (

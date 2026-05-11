@@ -11,7 +11,7 @@ export const genaiProvider = {
                 model: "gemini-3-flash-preview",
                 contents: `
                     You are a movie recommendation system.
-                    Based on the user's query, suggest 2 popular and relevant movie names,
+                    Based on the user's query, suggest 5 popular and relevant movie names,
                     Reminder :- movie names must be same (same spelling you can refer it from tmdb website for accurate name)
                     Return ONLY valid JSON in this format:
                     {

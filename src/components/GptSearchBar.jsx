@@ -45,16 +45,17 @@ const GptSearchBar = () => {
       e.preventDefault()
       setMovieSearching(true)
       if (!searchText.current.value) return alert("INPUT REQUIRED")
-      // const result = await ai.getMovieSuggestions(searchText.current.value)
-      const result = {
-        movies: [
-          "Baahubali: The Beginning",
-          "Kantara",
-          "Krrish",
-          "RRR",
-          "Thugs of Hindostan",
-        ],
-      }
+      const result = await ai.getMovieSuggestions(searchText.current.value)
+      // dummy Content
+      // const result = {
+      //   movies: [
+      //     "Baahubali: The Beginning",
+      //     "Kantara",
+      //     "Krrish",
+      //     "RRR",
+      //     "Thugs of Hindostan",
+      //   ],
+      // }
       if (result.movies.length === 0) {
         alert("API LIMIT EXIDED")
         return

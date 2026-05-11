@@ -8,7 +8,8 @@ export const genaiProvider = {
     async getMovieSuggestions(query) {
         try {
             const response = await genAI.models.generateContent({
-                model: "gemini-3-flash-preview",
+                // model: "gemini-3-flash-preview", less limit
+                model: "gemini-2.0-flash",
                 contents: `
                     You are a movie recommendation system.
                     Based on the user's query, suggest 5 popular and relevant movie names,

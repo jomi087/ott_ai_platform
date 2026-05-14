@@ -9,7 +9,7 @@ export const genaiProvider = {
         try {
             const response = await genAI.models.generateContent({
                 // model: "gemini-3-flash-preview", less limit
-                model: "gemini-2.0-flash",
+                model: "gemini-2.5-flash",
                 contents: `
                     You are a movie recommendation system.
                     Based on the user's query, suggest 5 popular and relevant movie names,

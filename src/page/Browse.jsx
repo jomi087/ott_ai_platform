@@ -110,13 +110,13 @@ const Browse = () => {
       <GptSearch />
     </div>
   ) : (
+    // Browse page - Responsive version
     <>
-      <div className="relative  h-screen overflow-hidden ">
+      <div className="relative h-[56vw] min-h-[320px] max-h-screen overflow-hidden">
         <VideoBackground movieId={mainMovie.id} />
 
         <div className="absolute inset-0 z-20">
           <Header />
-
           <VideoTitle
             movieName={mainMovie.original_title}
             info={mainMovie.overview}
@@ -125,9 +125,9 @@ const Browse = () => {
       </div>
 
       <div className="bg-black">
-        <div className="-mt-28 relative z-30">
+        <div className="-mt-10 sm:-mt-22 md:-mt-24 relative z-30">
           <MovieList Title={"Now Playing"} movies={movies} />
-          <MovieList Title={"Up-Comming"} movies={upComming} />
+          <MovieList Title={"Up-Coming"} movies={upComming} />
           <MovieList Title={"Popular"} movies={popularMovies} />
           <MovieList Title={"Top Rated"} movies={topRatedmovies} />
         </div>

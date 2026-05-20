@@ -1,64 +1,98 @@
 // Login.jsx - Responsive version
-import { useContext, useEffect, useRef, useState } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { useContext, useEffect, useRef, useState } from "react"
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { emailpasswordvalidation, namevalidation } from '../utils/validation';
-import AuthContext from "../context/AuthContext";
-import { auth, db } from '../utils/firebase';
-import { BG_IMG } from '../utils/constants';
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+import { emailpasswordvalidation, namevalidation } from "../utils/validation"
+import AuthContext from "../context/AuthContext"
+import { auth, db } from "../utils/firebase"
+import { BG_IMG } from "../utils/constants"
 
 const Login = () => {
-  const [signInForm, setSignInForm] = useState(true);
+  const [signInForm, setSignInForm] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const nameInputRef = useRef(null)
+  const emailInputRef = useRef(null)
+  const passwordInputRef = useRef(null)
 
-  const nameInputRef = useRef(null);
-  const emailInputRef = useRef(null);
-  const passwordInputRef = useRef(null);
-
-  const { authUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { authUser } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    if (authUser) navigate('/browse');
-  }, [authUser, navigate]);
+    if (authUser) navigate("/browse")
+  }, [authUser, navigate])
 
-  const toggleForm = () => setSignInForm(!signInForm);
+  const toggleForm = () => setSignInForm(!signInForm)
 
-  const handleButtonClick = (event) => {
-    event.preventDefault();
+  const handleButtonClick = async (event) => {
+    event.preventDefault()
 
-    let error = null;
-    if (!signInForm) error = namevalidation(nameInputRef.current?.value);
-    if (!error) error = emailpasswordvalidation(emailInputRef.current?.value, passwordInputRef.current?.value);
-
-    if (error) {
-      toast.error(error);
-      return;
-    }
+    let error = null
 
     if (!signInForm) {
-      createUserWithEmailAndPassword(auth, emailInputRef.current?.value, passwordInputRef.current?.value)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          return updateProfile(user, { displayName: nameInputRef.current?.value })
-            .then(() =>
-              setDoc(doc(db, "users", user.uid), {
-                name: nameInputRef.current?.value,
-                email: user.email,
-              })
-            );
-        })
-        .catch((error) => toast.error(error.code.split('/')[1]));
-    } else {
-      signInWithEmailAndPassword(auth, emailInputRef.current?.value, passwordInputRef.current?.value)
-        .then(() => navigate("/browse"))
-        .catch((error) => toast.error(error.code.split('/')[1]));
+      error = namevalidation(nameInputRef.current?.value)
     }
-  };
+
+    if (!error) {
+      error = emailpasswordvalidation(
+        emailInputRef.current?.value,
+        passwordInputRef.current?.value,
+      )
+    }
+
+    if (error) {
+      toast.error(error)
+      return
+    }
+
+    try {
+      setLoading(true)
+
+      if (!signInForm) {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          emailInputRef.current?.value,
+          passwordInputRef.current?.value,
+        )
+
+        const user = userCredential.user
+
+        await updateProfile(user, {
+          displayName: nameInputRef.current?.value,
+        })
+
+        await setDoc(doc(db, "users", user.uid), {
+          name: nameInputRef.current?.value,
+          email: user.email,
+        })
+      } else {
+        await signInWithEmailAndPassword(
+          auth,
+          emailInputRef.current?.value,
+          passwordInputRef.current?.value,
+        )
+
+        navigate("/browse")
+      }
+    } catch (error) {
+      toast.error(error.code.split("/")[1])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const autoFill = () => {
+    emailInputRef.current.value = "dummy1@gmail.com"
+    passwordInputRef.current.value = "1111111111"
+  }
 
   return (
     <div className="relative min-h-screen w-screen">
@@ -76,7 +110,8 @@ const Login = () => {
       </div>
 
       {/* Form container */}
-      <div className={`relative flex justify-center items-center min-h-screen px-4 sm:px-6
+      <div
+        className={`relative flex justify-center items-center min-h-screen px-4 sm:px-6
         ${signInForm ? "pt-16 sm:pt-18" : "pt-14 sm:pt-12"}`}
       >
         <form className="bg-black/80 text-white p-6 sm:p-8 rounded-lg w-full max-w-sm sm:max-w-md shadow-lg">
@@ -111,8 +146,9 @@ const Login = () => {
           />
 
           <button
-            className="p-3 my-4 bg-red-600 w-full rounded font-semibold
-              hover:bg-red-700 active:bg-red-800 transition text-sm sm:text-base"
+            disabled={loading}
+            className={`p-3 my-4 w-full rounded font-semibold transition-all duration-300
+            ${ loading ? "bg-red-400 opacity-70 cursor-not-allowed" : "bg-red-600 hover:bg-red-700 active:bg-red-800"}`}
             onClick={handleButtonClick}
           >
             {signInForm ? "Sign In" : "Sign Up"}
@@ -122,11 +158,14 @@ const Login = () => {
             Forgot password
           </p>
 
-          <div className="flex justify-between mt-3 text-gray-400 text-sm sm:text-base">
-            <label className="flex items-center cursor-pointer">
-              <input type="checkbox" className="mr-2" /> Remember me
-            </label>
-          </div>
+          {signInForm && (
+            <div className="flex justify-between mt-3 text-gray-400 text-sm sm:text-base">
+              <label className="flex items-center cursor-pointer">
+                <input type="checkbox" className="mr-2" onClick={autoFill} />{" "}
+                auto fill
+              </label>
+            </div>
+          )}
 
           <p className="mt-4 text-gray-400 text-start text-sm sm:text-base">
             {signInForm ? "New to Netflix? " : "Already registered! "}
@@ -140,7 +179,7 @@ const Login = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

@@ -97,8 +97,9 @@ const Browse = () => {
     return (
       <>
         <Header />
-        <div className="flex justify-center items-center h-screen">
-          <h2 className="font-bold text-5xl">Loading....</h2>
+        <div className="flex flex-col justify-center items-center h-screen bg-black/95">
+          <div className="w-16 h-16 border-4 border-white  border-t-transparent rounded-full animate-spin"></div>
+          <p className="mt-4 text-lg font-semibold text-white">Loading...</p>
         </div>
       </>
     )

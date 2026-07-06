@@ -102,7 +102,7 @@ const Login = () => {
       <div className="absolute inset-0">
         <img
           src={BG_IMG}
-          alt="netflix-bg-img"
+          alt="bg-img"
           className="w-full h-full object-cover"
         />
         {/* Dark overlay for better readability on mobile */}
@@ -168,7 +168,7 @@ const Login = () => {
           )}
 
           <p className="mt-4 text-gray-400 text-start text-sm sm:text-base">
-            {signInForm ? "New to Netflix? " : "Already registered! "}
+            {signInForm ? "New to OTT ? " : "Already registered! "}
             <span
               className="text-white cursor-pointer hover:underline hover:text-blue-400"
               onClick={toggleForm}

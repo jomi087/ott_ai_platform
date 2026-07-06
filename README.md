@@ -75,7 +75,7 @@ The platform allows users to explore trending movies, watch trailers, and receiv
 ## Clone Repository
 
 ```bash
-git clone https://github.com/jomi087/Netflix-Gpt-with-React.git
+git clone https://github.com/jomi087/ott_ai_platform.git
 ```
 
 ---
@@ -172,7 +172,4 @@ This project helped improve knowledge in:
 ---
 
 # Author
-
-Your Name
-
-# NETFLIX-GPT WITH REACT [ With out Redux ]
+jomi

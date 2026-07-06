@@ -1,6 +1,5 @@
 // Header.jsx - Responsive version
 import React, { useContext } from "react"
-import netflixLogo from "../assets/Netflix-logo.png"
 import UserInfo from "../assets/profile_img.png"
 import { auth } from "../utils/firebase"
 import AuthContext from "../context/AuthContext"
@@ -28,21 +27,23 @@ const Header = () => {
 
   return (
     <div
-      className={`absolute z-30 w-full flex justify-between items-center
-        ${authUser
-          ? "py-3 px-4 sm:py-4 sm:px-8 md:py-6 md:px-12"
-          : "py-6 px-6 sm:py-8 sm:px-12 md:py-11 md:px-25"
+      className={`absolute border z-30 w-full flex justify-between items-center
+        ${
+          authUser
+            ? "py-3 px-4 sm:py-4 sm:px-8 md:py-6 md:px-10"
+            : "py-6 px-6 sm:py-8 sm:px-12 md:py-11 md:px-25"
         }`}
     >
       {/* Logo */}
-      <img
-        src={netflixLogo}
-        className={authUser
-          ? "w-20 h-6 sm:w-24 sm:h-7 md:w-28 md:h-9"
-          : "w-28 sm:w-36 md:w-44"
+      <p
+        className={
+          authUser
+            ? "text-red-500 border-b text-2xl  font-serif font-extrabold"
+            : ""
         }
-        alt="logo-Netflix"
-      />
+      >
+        AI - OTT
+      </p>
 
       {/* Auth controls */}
       {authUser && (
@@ -53,7 +54,11 @@ const Header = () => {
               className="text-white focus:outline-none focus:ring-0 bg-transparent text-sm sm:text-base"
             >
               {SUPPORTED_LANGUAGES.map((lang) => (
-                <option className="text-black" key={lang.identifier} value={lang.identifier}>
+                <option
+                  className="text-black"
+                  key={lang.identifier}
+                  value={lang.identifier}
+                >
                   {lang.name}
                 </option>
               ))}
@@ -61,7 +66,7 @@ const Header = () => {
           )}
 
           <button
-            className= "text-white bg-transparent border-1 rounded-lg px-2 py-1 mx-1 sm:mx-2 text-xs sm:text-sm cursor-pointer opacity-85 font-bold whitespace-nowrap"
+            className="text-white bg-transparent border-1 rounded-lg px-2 py-1 mx-1 sm:mx-2 text-xs sm:text-sm cursor-pointer opacity-85 font-bold whitespace-nowrap"
             onClick={handleGptSearchClick}
           >
             {!showSearchPage ? "AI Search" : "Home"}
